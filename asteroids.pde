@@ -1,83 +1,27 @@
-Star[] st = new Star[400];
-ArrayList <Asteroid> joe = new ArrayList <Asteroid>();
-Spaceship bob;
-boolean PW = false;
-boolean PS = false;
-boolean PA = false;
-boolean PD = false;
-
-public void setup(){
-  size(900, 800);
-  for(int i = 0; i < st.length; i++){
-    st[i] = new Star();
+class Asteroid extends Floater{
+  private double rotSpeed;
+  public Asteroid(){
+    corners = 6;
+    corners = 25;
+    int r = 1;
+    xCorners = new int[]{15*r, 13*r, 10*r, 5*r, -1*r, -3*r, -4*r, -5*r, -7*r, -9*r, -10*r, -8*r, -7*r, -7*r, -8*r, -10*r, -9*r, -7*r, -5*r, -4*r, -3*r, -1*r, 5*r, 10*r, 13*r};
+    yCorners = new int[]{0*r, -1*r, -1*r, -2*r, -8*r, -8*r, -7*r, -3*r, -5*r, -5*r, -3*r, -1*r, -1*r, 1*r, 1*r, 3*r, 5*r, 5*r, 3*r, 7*r, 8*r, 8*r, 2*r, 1*r, 1*r};
+    myCenterX = (int)(Math.random() * 900);
+    myCenterY = (int)(Math.random() * 800);
+    myXspeed = Math.random() * 2 - 1;
+    myYspeed = Math.random() * 2 - 1;
+    myPointDirection = 0;
+    myColor = (255);
+    rotSpeed = (double)(Math.random() * 5) - 2.5;
   }
-  for(int i = 0; i < 10; i++){
-    joe.add(new Asteroid());
+  public void move(){
+    turn(rotSpeed);
+    super.move();
   }
-  bob = new Spaceship();
-}
-public void draw(){
-  background(0);
-  for(int i = 0; i < st.length; i++){
-    st[i].show();
+  public double getX(){
+    return myCenterX;
   }
-  for(int i = 0; i < joe.size(); i++){
-    joe.get(i).show();
-    joe.get(i).move();
-    float d = dist((float)bob.getX(), (float)bob.getY(), (float)joe.get(i).getX(), (float)joe.get(i).getY());
-    if(d < 20){
-      joe.remove(i);
-    }
-  }
-  bob.show();
-  bob.move();
-  checker();
-}
-
-public void keyPressed(){
-  if(key == 'e'){
-    bob.hyperspace();
-  }
-  if(key == 'w'){
-    PW = true;
-  }
-  if(key == 's'){
-    PS = true;
-  }
-  if(key == 'a'){
-    PA = true;
-  }
-  if(key == 'd'){
-    PD = true;
-  }
-}
-
-public void keyReleased(){
-  if(key == 'w'){
-    PW = false;
-  }
-  if(key == 's'){
-    PS = false;
-  }
-  if(key == 'a'){
-    PA = false;
-  }
-  if(key == 'd'){
-    PD = false;
-  }
-}
-
-public void checker(){
-  if(PW == true){
-    bob.addS();
-  }
-  if(PS == true){
-    bob.subS();
-  }
-  if(PA == true){
-    bob.turnL();
-  }
-  if(PD == true){
-    bob.turnR();
+  public double getY(){
+    return myCenterY;
   }
 }
