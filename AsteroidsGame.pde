@@ -1,10 +1,13 @@
 Star[] st = new Star[400];
 ArrayList <Asteroid> joe = new ArrayList <Asteroid>();
+ArrayList <Bullet> Shots = new ArrayList <Bullet>();
 Spaceship bob;
 boolean PW = false;
 boolean PS = false;
 boolean PA = false;
 boolean PD = false;
+boolean PSp = false;
+int cooldown = 20;
 
 public void setup(){
   size(900, 800);
@@ -24,9 +27,21 @@ public void draw(){
   for(int i = 0; i < joe.size(); i++){
     joe.get(i).show();
     joe.get(i).move();
-    float d = dist((float)bob.getX(), (float)bob.getY(), (float)joe.get(i).getX(), (float)joe.get(i).getY());
-    if(d < 20){
+    float d1 = dist((float)bob.getX(), (float)bob.getY(), (float)joe.get(i).getX(), (float)joe.get(i).getY());
+    if(d1 < 20){
       joe.remove(i);
+    }
+  }
+  for(int i = 0; i < Shots.size(); i++){
+    Shots.get(i).move();
+    Shots.get(i).show();
+    for(int r = 0; r < joe.size(); r++){
+      float d = dist((float)joe.get(r).getX(), (float)joe.get(r).getY(), (float)Shots.get(i).getX(), (float)Shots.get(i).getY());
+      if(d <= 27){
+        joe.remove(r);
+        Shots.remove(i);
+        break;
+      }
     }
   }
   bob.show();
@@ -50,6 +65,9 @@ public void keyPressed(){
   if(key == 'd'){
     PD = true;
   }
+  if(key == ' '){
+    PSp = true;
+  }
 }
 
 public void keyReleased(){
@@ -65,6 +83,9 @@ public void keyReleased(){
   if(key == 'd'){
     PD = false;
   }
+  if(key == ' '){
+    PSp = false;
+  }
 }
 
 public void checker(){
@@ -79,5 +100,12 @@ public void checker(){
   }
   if(PD == true){
     bob.turnR();
+  }
+  if(PSp == true){
+    cooldown -= 5;
+    if(cooldown == 0){
+      Shots.add(new Bullet(bob));
+      cooldown = 20;
+    }
   }
 }
